@@ -141,6 +141,12 @@ const adminController = {
           res.redirect('/admin/users')
         })
       })
+  },
+  getUser: (req, res) => {
+    return User.findByPk(req.params.id)
+      .then((user) => {
+        res.render('user')
+      })
   }
 }
 
