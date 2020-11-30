@@ -17,7 +17,12 @@ const adminController = {
       })
     })
   },
-  createRestaurant: (req, res) => {
+  createOrEditRestaurant: (req, res) => {
+    if (req.params.id) {
+      return Restaurant.findByPk(req.params.id, { raw: true }).then(restaurant => {
+        return res.render('admin/create', { restaurant: restaurant })
+      })
+    }
     return res.render('admin/create')
   },
   postRestaurant: (req, res) => {
@@ -62,12 +67,7 @@ const adminController = {
       })
     })
   },
-  editRestaurant: (req, res) => {
-    return Restaurant.findByPk(req.params.id, { raw: true }).then(restaurant => {
-      return res.render('admin/create', { restaurant: restaurant })
-    })
-  },
-  putRestaurant: (req, res) => {
+  updateRestaurant: (req, res) => {
     if (!req.body.name) {
       req.flash('error_messages', "name didn't exist")
       return res.redirect('back')
@@ -131,7 +131,7 @@ const adminController = {
       })
     })
   },
-  putUsers: (req, res) => {
+  updateUser: (req, res) => {
     return User.findByPk(req.params.id)
       .then((user) => {
         user.update({
