@@ -29,7 +29,11 @@ app.use((req, res, next) => {
   next()
 })
 
-app.engine('hbs', hbs({ defaultLayout: 'main', extname: '.hbs' }))
+app.engine('hbs', hbs({
+  defaultLayout: 'main',
+  helpers: require('./config/hbs-helper'),
+  extname: '.hbs'
+}))
 app.set('view engine', 'hbs')
 app.use(bodyParser.urlencoded({ extended: true }))
 
