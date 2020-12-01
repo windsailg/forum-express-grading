@@ -48,6 +48,7 @@ module.exports = (app, passport) => {
 
   // Comments
   app.post('/comments', authenticated, commentController.postComment)
+  app.delete('/comments/:id', authenticatedAdmin, commentController.deleteComment)
 
   // Role
   app.get('/admin/users', authenticatedAdmin, userController.getUsers)
