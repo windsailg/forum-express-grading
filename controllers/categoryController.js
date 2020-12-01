@@ -10,9 +10,9 @@ const categoryController = {
       if (req.params.id) {
         Category.findByPk(req.params.id)
           .then((category) => {
-            return res.render('admin/categories', { 
+            return res.render('admin/categories', {
               categories: categories, 
-              category: category.toJSON() 
+              category: category.toJSON()
             })
           })
       } else {
