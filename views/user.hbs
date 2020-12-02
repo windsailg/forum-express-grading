@@ -1,3 +1,33 @@
-<div>
+{{!-- <div>
     This page is under development
-</div>
+</div> --}}
+
+    <div class="row p-3 shadow bg-white">
+
+        <div class="col-md-4 mt-3">
+
+            <figure class="figure">
+                <img 
+                    {{#if user.image}}
+                    src="{{user.image}}"
+                    {{else}}
+                    src="/images/no_img.png"
+                    {{/if}}
+                    alt="user_avatar" 
+                    class="figure-img img-fluid rounded img__box img-thumbnail"
+                >
+                <figcaption class="figure-caption"></figcaption>
+            </figure>
+
+        </div>
+
+        <div class="col-md-8 mt-3">
+
+            <h5 class="col-md-12 mt-4">{{user.name}}</h5>
+            <div class="col-md-12">{{user.email}}</div>
+            <div class="col-md-12 mt-4 md-4">
+                <a href="/user/{{user.id}}/edit" class="btn btn-primary">Edit</a>
+            </div>
+            
+        </div>
+    </div>

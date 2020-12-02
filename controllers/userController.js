@@ -1,8 +1,12 @@
+const fs = require('fs')
 const bcrypt = require('bcryptjs')
 const db = require('../models')
 const User = db.User
+const imgur = require('imgur-node-api')
+const IMGUR_CLIENT_ID = process.env.IMGUR_CLIENT_ID
 
 const userController = {
+  // SignIn Sign Up
   signUpPage: (req, res) => {
     return res.render('signup')
   },
@@ -42,18 +46,18 @@ const userController = {
     req.logout()
     res.redirect('/signin')
   },
+  // Role
   getUsers: (req, res) => {
     return User.findAll({
       raw: true,
       nest: true
-      // where: { UserId: req.user.id }
     }).then(users => {
       return res.render('admin/users', {
         users: users
       })
     })
   },
-  updateUser: (req, res) => {
+  updateRole: (req, res) => {
     return User.findByPk(req.params.id)
       .then((user) => {
         user.update({
@@ -64,11 +68,56 @@ const userController = {
         })
       })
   },
+  // Profile
   getUser: (req, res) => {
-    return User.findByPk(req.params.id)
+    return User.findByPk(req.params.id, { raw: true, nest: true })
       .then((user) => {
-        res.render('user')
+        return res.render('user', {
+          user: user
+        })
       })
+  },
+  editUser: (req, res) => {
+    return User.findByPk(req.params.id, { raw: true, nest: true })
+      .then((user) => {
+        return res.render('edit_user', {
+          user: user
+        })
+      })
+  },
+  updateUser: (req, res) => {
+    console.log(req.body)
+    if (!req.body.name) {
+      req.flash('error_messages', "User name didn't exist")
+      return res.redirect('back')
+    }
+    const { file } = req
+    if (file) {
+      imgur.setClientID(IMGUR_CLIENT_ID)
+      imgur.upload(file.path, (_err, img) => {
+        return User.findByPk(req.params.id)
+          .then((user) => {
+            user.update({
+              name: req.body.name,
+              image: file ? img.data.link : user.image
+            }).then(user => {
+              req.flash('success_messages', 'User Info was successfully update')
+              return res.redirect(`/user/${req.params.id}`)
+            })
+          })
+      })
+    } else {
+      return User.findByPk(req.params.id)
+        .then(user => {
+          user.update({
+            name: req.body.name,
+            image: user.image
+          }).then(user => {
+            req.flash('success_messages', 'User Info was successfully update')
+            return res.redirect(`/user/${req.params.id}`)
+          })
+        })
+    }
   }
 }
 
