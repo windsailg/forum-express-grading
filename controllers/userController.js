@@ -70,50 +70,53 @@ const userController = {
   },
   // Profile
   getUser: (req, res) => {
-    return User.findByPk(req.user.id, { raw: true, nest: true })
-      .then((user) => {
-        return res.render('user/profile', {
+    return User.findByPk(req.params.id, { raw: true, nest: true })
+      .then((user)=> {
+        return res.render('users/profile', {
           profile: user
         })
       })
   },
   editUser: (req, res) => {
-    return User.findByPk(req.user.id, { raw: true, nest: true })
+    return User.findByPk(req.params.id, { raw: true, nest: true })
       .then((user) => {
-        return res.render('user/edit_user', {
-          profile: user
+        return res.render('users/edit_user', {
+          user: user
         })
       })
   },
   updateUser: (req, res) => {
+    // if (Number(req.params.id) !== Number(req.user.id)) {
+    //   req.flash('error_messages', 'You do not have permission to modify')
+    //   return res.redirect(`/users/${req.params.id}`)
+    // }
     if (!req.body.name) {
-      req.flash('error_messages', "User name didn't exist")
+      req.flash('error_messages', 'Name must be exist')
       return res.redirect('back')
     }
     const { file } = req
     if (file) {
       imgur.setClientID(IMGUR_CLIENT_ID)
       imgur.upload(file.path, (_err, img) => {
-        return User.findByPk(req.user.id)
-          .then((user) => {
+        return User.findByPk(req.body)
+          .then(user => {
             user.update({
               name: req.body.name,
-              image: file ? img.data.link : user.image
+              image: img.data.link
             }).then(user => {
               req.flash('success_messages', 'User Info was successfully update')
-              return res.redirect(`/user/${req.user.id}`)
+              return res.redirect(`/users/${req.params.id}`)
             })
           })
       })
     } else {
-      return User.findByPk(req.user.id)
+      return User.findByPk(req.params.id)
         .then(user => {
           user.update({
-            name: req.body.name,
-            image: user.image
+            name: req.body.name
           }).then(user => {
             req.flash('success_messages', 'User Info was successfully update')
-            return res.redirect(`/user/${req.user.id}`)
+            return res.redirect(`/users/${req.params.id}`)
           })
         })
     }
