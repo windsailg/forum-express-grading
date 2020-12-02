@@ -56,8 +56,8 @@ module.exports = (app, passport) => {
 
   // User
   app.get('/user/:id', authenticated, userController.getUser)
-  app.get('/user/:id/edit', authenticatedAdmin, userController.editUser)
-  app.put('/user/:id/updateUser', authenticatedAdmin, upload.single('image'),userController.updateUser)
+  app.get('/user/:id/edit', authenticated, userController.editUser)
+  app.put('/user/:id', authenticated, upload.single('image'), userController.updateUser)
 
   app.get('/signup', userController.signUpPage)
   app.post('/signup', userController.signUp)

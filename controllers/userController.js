@@ -70,23 +70,22 @@ const userController = {
   },
   // Profile
   getUser: (req, res) => {
-    return User.findByPk(req.params.id, { raw: true, nest: true })
+    return User.findByPk(req.user.id, { raw: true, nest: true })
       .then((user) => {
-        return res.render('user', {
-          user: user
+        return res.render('user/profile', {
+          profile: user
         })
       })
   },
   editUser: (req, res) => {
-    return User.findByPk(req.params.id, { raw: true, nest: true })
+    return User.findByPk(req.user.id, { raw: true, nest: true })
       .then((user) => {
-        return res.render('edit_user', {
-          user: user
+        return res.render('user/edit_user', {
+          profile: user
         })
       })
   },
   updateUser: (req, res) => {
-    console.log(req.body)
     if (!req.body.name) {
       req.flash('error_messages', "User name didn't exist")
       return res.redirect('back')
@@ -95,26 +94,26 @@ const userController = {
     if (file) {
       imgur.setClientID(IMGUR_CLIENT_ID)
       imgur.upload(file.path, (_err, img) => {
-        return User.findByPk(req.params.id)
+        return User.findByPk(req.user.id)
           .then((user) => {
             user.update({
               name: req.body.name,
               image: file ? img.data.link : user.image
             }).then(user => {
               req.flash('success_messages', 'User Info was successfully update')
-              return res.redirect(`/user/${req.params.id}`)
+              return res.redirect(`/user/${req.user.id}`)
             })
           })
       })
     } else {
-      return User.findByPk(req.params.id)
+      return User.findByPk(req.user.id)
         .then(user => {
           user.update({
             name: req.body.name,
             image: user.image
           }).then(user => {
             req.flash('success_messages', 'User Info was successfully update')
-            return res.redirect(`/user/${req.params.id}`)
+            return res.redirect(`/user/${req.user.id}`)
           })
         })
     }
