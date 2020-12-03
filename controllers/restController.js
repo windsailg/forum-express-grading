@@ -24,7 +24,7 @@ const restController = {
       include: Category,
       where: whereQuery,
       offset: offset,
-      limit: pageLimit,
+      limit: pageLimit
     }).then(result => {
       const page = Number(req.query.page) || 1
       const pages = Math.ceil(result.count / pageLimit)
