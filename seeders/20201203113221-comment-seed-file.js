@@ -2,27 +2,16 @@
 // const faker = require('faker')
 module.exports = {
   up: async (queryInterface, Sequelize) => {
-    await queryInterface.bulkInsert('Comments', [{
-      text: 'lorem',
-      RestaurantId: 61,
-      createdAt: new Date(),
-      updatedAt: new Date()
-    }, {
-      text: 'lorem',
-      RestaurantId: 11,
-      createdAt: new Date(),
-      updatedAt: new Date()
-    }, {
-      text: 'lorem',
-      RestaurantId: 121,
-      createdAt: new Date(),
-      updatedAt: new Date()
-    }, {
-      text: 'lorem',
-      RestaurantId: 41,
-      createdAt: new Date(),
-      updatedAt: new Date()
-    }], {})
+    await queryInterface.bulkInsert('Comments',
+      Array.from({ length: 10 }).map((d, i) =>
+        ({
+          text: 'lorem',
+          createdAt: new Date(),
+          updatedAt: new Date(),
+          // RestaurantId: Math.floor(Math.random() * 10) * 100 + 1,
+          // UserId: Math.floor(Math.random() * 3) * 10 + 1
+        })
+      ), {})
   },
   down: async (queryInterface, Sequelize) => {
     await queryInterface.bulkDelete('Comments', null, {})
