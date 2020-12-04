@@ -9,7 +9,7 @@ module.exports = {
           createdAt: new Date(),
           updatedAt: new Date(),
           // RestaurantId: Math.floor(Math.random() * 10) * 100 + 1,
-          // UserId: Math.floor(Math.random() * 3) * 10 + 1
+          UserId: Math.floor(Math.random() * 3) * 10 + 1
         })
       ), {})
   },

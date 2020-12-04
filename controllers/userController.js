@@ -103,37 +103,34 @@ const userController = {
       })
   },
   updateUser: (req, res) => {
-    // if (Number(req.params.id) !== Number(req.user.id)) {
-    //   req.flash('error_messages', 'You do not have permission to modify')
-    //   return res.redirect(`/users/${req.params.id}`)
-    // }
     if (!req.body.name) {
-      req.flash('error_messages', 'Name must be exist')
+      req.flash('error_messages', 'Name must exist')
       return res.redirect('back')
     }
     const { file } = req
+    console.log(file)
     if (file) {
       imgur.setClientID(IMGUR_CLIENT_ID)
       imgur.upload(file.path, (_err, img) => {
-        return User.findByPk(req.body)
+        return User.findByPk(req.user.id)
           .then(user => {
             user.update({
               name: req.body.name,
-              image: img.data.link
+              image: file ? img.data.link : user.image
             }).then(user => {
               req.flash('success_messages', 'User Info was successfully update')
-              return res.redirect(`/users/${req.params.id}`)
+              return res.redirect(`/users/${req.user.id}`)
             })
           })
       })
     } else {
-      return User.findByPk(req.params.id)
+      return User.findByPk(req.user.id)
         .then(user => {
           user.update({
             name: req.body.name
           }).then(user => {
             req.flash('success_messages', 'User Info was successfully update')
-            return res.redirect(`/users/${req.params.id}`)
+            return res.redirect(`/users/${req.user.id}`)
           })
         })
     }
