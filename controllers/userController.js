@@ -108,7 +108,6 @@ const userController = {
       return res.redirect('back')
     }
     const { file } = req
-    console.log(file)
     if (file) {
       imgur.setClientID(IMGUR_CLIENT_ID)
       imgur.upload(file.path, (_err, img) => {

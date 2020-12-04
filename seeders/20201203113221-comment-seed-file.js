@@ -8,7 +8,7 @@ module.exports = {
           text: 'lorem',
           createdAt: new Date(),
           updatedAt: new Date(),
-          // RestaurantId: Math.floor(Math.random() * 10) * 100 + 1,
+          RestaurantId: Math.floor(Math.random() * 10) * 100 + 1,
           UserId: Math.floor(Math.random() * 3) * 10 + 1
         })
       ), {})
