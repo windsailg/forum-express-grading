@@ -4,6 +4,7 @@ const User = db.User
 const Restaurant = db.Restaurant
 const Comment = db.Comment
 const Favorite = db.Favorite
+const Like = db.Like
 const imgur = require('imgur-node-api')
 const IMGUR_CLIENT_ID = process.env.IMGUR_CLIENT_ID
 
@@ -108,6 +109,7 @@ const userController = {
       req.flash('error_messages', 'Name must exist')
       return res.redirect('back')
     }
+
     const { file } = req
     if (file) {
       imgur.setClientID(IMGUR_CLIENT_ID)
@@ -157,6 +159,32 @@ const userController = {
         favorite.destroy()
           .then((restaurant) => {
             req.flash('success_messages', '成功移出收藏')
+            return res.redirect('back')
+          })
+      })
+  },
+  // Like
+  addLike: (req, res) => {
+    return Like.create({
+      UserId: req.user.id,
+      RestaurantId: req.params.restaurantId
+    })
+      .then((restaurant) => {
+        req.flash('success_messages', '你喜歡這間餐廳！')
+        return res.redirect('back')
+      })
+  },
+  removeLike: (req, res) => {
+    return Like.findOne({
+      where: {
+        UserId: req.user.id,
+        RestaurantId: req.params.restaurantId
+      }
+    })
+      .then((like) => {
+        like.destroy()
+          .then((restaurant) => {
+            req.flash('success_messages', '已取消喜歡該餐廳')
             return res.redirect('back')
           })
       })
