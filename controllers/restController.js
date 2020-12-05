@@ -110,13 +110,19 @@ const restController = {
       include: [
         Category,
         {
+          model: User,
+          as: 'FavoritedUsers'
+        },
+        {
           model: Comment,
           include: [User]
         }
       ]
     }).then(restaurant => {
+      const isFavorited = restaurant.FavoritedUsers.map(d => d.id).includes(req.user.id)
       return res.render('dashboard', {
-        restaurant: restaurant.toJSON()
+        restaurant: restaurant.toJSON(),
+        isFavorited: isFavorited
       })
     })
   }
