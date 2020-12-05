@@ -19,16 +19,16 @@
     <p>{{restaurant.description}}</p>
           <div class="row">
 
-        <div class="col-md-2 mt-2">
+        <div class="col-md-3 mt-2">
           <a href="/restaurants/{{restaurant.id}}/dashboard" class="btn btn-primary  ">Dashboard</a>
         </div>
 
           {{#if isFavorited }}
-            <form class="col-md-2 mt-2" action="/favorite/{{restaurant.id}}?_method=DELETE" method="POST">
+            <form class="col-md-3 mt-2" action="/favorite/{{restaurant.id}}?_method=DELETE" method="POST">
               <button type="submit"class="btn btn-danger">移除最愛</button>
             </form>
           {{else}}
-            <form class="col-md-2 mt-2" action="/favorite/{{restaurant.id}}" method="POST" >
+            <form class="col-md-3 mt-2" action="/favorite/{{restaurant.id}}" method="POST" >
               <button type="submit" class="btn btn-primary">加到最愛</button>
             </form>
           {{/if}}
