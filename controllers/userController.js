@@ -190,6 +190,7 @@ const userController = {
           })
       })
   },
+  // GetTop
   getTopUser: (req, res) => {
     return User.findAll({
       include: [
@@ -215,9 +216,9 @@ const userController = {
       followerId: req.user.id,
       followingId: req.params.userId
     })
-     .then((followship) => {
-       return res.redirect('back')
-     })
+      .then((followship) => {
+        return res.redirect('back')
+      })
   },
   removeFollowing: (req, res) => {
     return Followship.findOne({where: {
@@ -226,9 +227,9 @@ const userController = {
     }})
       .then((followship) => {
         followship.destroy()
-         .then((followship) => {
-           return res.redirect('back')
-         })
+          .then((followship) => {
+            return res.redirect('back')
+          })
       })
   }
 }
