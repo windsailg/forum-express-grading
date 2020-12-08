@@ -28,7 +28,7 @@ const categoryController = {
         .then((category) => {
           category.update(req.body)
             .then((category) => {
-              res.redirect('admin/categories')
+              res.redirect('/admin/categories')
             })
         })
     }
