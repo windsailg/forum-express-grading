@@ -93,7 +93,7 @@ const adminService = {
             image: restaurant.image,
             CategoryId: req.body.categoryId
           }).then((restaurant) => {
-            callback({ status: 'success', message: "restaurant was successfully update" })
+            callback({ status: 'success', message: "Restaurant was successfully update" })
           })
         })
     }
@@ -103,7 +103,7 @@ const adminService = {
       .then((restaurant) => {
         restaurant.destroy()
           .then((restaurant) => {
-            callback({ status: 'success', message: ''})
+            callback({ status: 'success', message: 'Restaurant was successfully delete'})
           })
       })
   },
@@ -147,6 +147,15 @@ const adminService = {
             })
         })
     }
+  },
+  deleteCategory: (req, res, callback) => {
+    return Category.findByPk(req.params.id)
+      .then((category) => {
+        category.destroy()
+          .then((category) => {
+            callback({ status: 'success', message: 'Category was successfully delete' })
+          })
+      })
   }
 }
 
