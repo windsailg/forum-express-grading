@@ -37,7 +37,7 @@ app.engine('hbs', hbs({
 }))
 app.set('view engine', 'hbs')
 app.use(bodyParser.urlencoded({ extended: true }))
-
+app.use(bodyParser.json())
 app.listen(port, () => {
   db.sequelize.sync()
   console.log(`Example app listening at http://localhost:${port}`)
