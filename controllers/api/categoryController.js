@@ -14,6 +14,11 @@ const categoryController = {
     adminService.postCategory(req, res, (data) => {
       return res.json(data)
     })
+  },
+  updateCategory: (req, res) => {
+    adminService.updateCategory(req, res, (data) => {
+      return res.json(data)
+    })
   }
 }
 module.exports = categoryController
